@@ -1,0 +1,11 @@
+@baseUrl = http://localhost:3333
+
+# Create a goal
+POST {{baseUrl}}/goals
+Content-Type: application/json
+
+{
+    "title": "Learn React",
+    "desiredWeeklyFrequency": 1
+}
+###

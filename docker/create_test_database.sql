@@ -1,0 +1,1 @@
+CREATE DATABASE mygoals_test;
