@@ -9,9 +9,9 @@ test('experience to level', () => {
   const experienceToLevel2 = calculateExperienceToLevel(2)
   const experienceToLevel5 = calculateExperienceToLevel(4)
 
-  expect(experienceToLevel1).toEqual(0)
-  expect(experienceToLevel2).toEqual(26)
-  expect(experienceToLevel5).toEqual(43)
+  expect(experienceToLevel1).toEqual(20)
+  expect(experienceToLevel2).toEqual(46)
+  expect(experienceToLevel5).toEqual(123)
 })
 
 test('level from experience', () => {

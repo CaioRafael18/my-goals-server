@@ -15,7 +15,7 @@ describe('user user level and experience', () => {
     expect(result).toEqual({
       experience: 200,
       level: 6,
-      experienceToNextLevel: 74,
+      experienceToNextLevel: 255,
     })
   })
 })
