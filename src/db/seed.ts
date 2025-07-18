@@ -13,9 +13,9 @@ async function seed() {
   const [user] = await db
     .insert(users)
     .values({
-      name: 'Caio Rafael',
-      externalAccountId: 29749,
-      avatarUrl: 'https://github.com/CaioRafael18',
+      name: 'teste',
+      externalAccountId: 123456,
+      avatarUrl: 'https://github.com/teste',
     })
     .returning()
 

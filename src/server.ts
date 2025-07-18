@@ -1,3 +1,6 @@
+/** biome-ignore-all lint/suspicious/noConsole: development */
+import { writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import fastifyCors from '@fastify/cors'
 import { fastifyJwt } from '@fastify/jwt'
 import { fastifySwagger } from '@fastify/swagger'
@@ -12,9 +15,9 @@ import { env } from './env.ts'
 import { authenticateFromGithubRoute } from './http/routes/authenticate-from-github-route.ts'
 import { createGoalCompletionRoute } from './http/routes/create-goal-completion-route.ts'
 import { createGoalRoute } from './http/routes/create-goal-route.ts'
-import { getGamificationStatusRoute } from './http/routes/get-gamification-status-route.ts'
 import { getPendingGoalsRoute } from './http/routes/get-pending-goals-route.ts'
 import { getProfileRoute } from './http/routes/get-profile-route.ts'
+import { getUserExperienceAndLevelRoute } from './http/routes/get-user-experience-and-level.ts'
 import { getWeekSummaryRoute } from './http/routes/get-week-summary-route.ts'
 
 const app = fastify()
@@ -47,9 +50,24 @@ app.register(fastifySwaggerUi, {
 app.register(authenticateFromGithubRoute)
 app.register(createGoalCompletionRoute)
 app.register(createGoalRoute)
-app.register(getGamificationStatusRoute)
+app.register(getUserExperienceAndLevelRoute)
 app.register(getPendingGoalsRoute)
 app.register(getProfileRoute)
 app.register(getWeekSummaryRoute)
 
-app.listen({ port: env.PORT })
+app.listen({ port: env.PORT }).then(() => {
+  console.log('🚀 Server is running on port 3333')
+})
+
+if (env.NODE_ENV === 'development') {
+  console.log(import.meta.dirname)
+  const specFile = resolve(import.meta.dirname, '../swagger.json')
+
+  app.ready().then(() => {
+    const spec = JSON.stringify(app.swagger(), null, 2)
+
+    writeFile(specFile, spec).then(() => {
+      console.log('swagger.json spec generated')
+    })
+  })
+}

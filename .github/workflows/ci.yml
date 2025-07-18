@@ -23,16 +23,19 @@ jobs:
           --health-retries 10
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+
+      - name: Install node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: "pnpm"
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 10
 
       - run: pnpm ci
       - run: pnpm run test

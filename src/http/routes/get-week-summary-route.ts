@@ -4,6 +4,20 @@ import z from 'zod/v4'
 import { authenticateUserHook } from '../../middleware/auth.ts'
 import { getWeekSummary } from '../../use-cases/get-week-summary-use-case.ts'
 
+const goalSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  completedAt: z.string(),
+})
+
+const getWeekSummaryResponseSchema = z.object({
+  summary: z.object({
+    completed: z.number(),
+    total: z.number().nullable(),
+    goalsPerDay: z.record(z.string(), z.array(goalSchema)).nullable(),
+  }),
+})
+
 export const getWeekSummaryRoute: FastifyPluginAsyncZod = async (app) => {
   await app.get(
     '/summary',
@@ -20,22 +34,7 @@ export const getWeekSummaryRoute: FastifyPluginAsyncZod = async (app) => {
             .default(dayjs().startOf('week').toDate()),
         }),
         response: {
-          200: z.object({
-            summary: z.object({
-              completed: z.number(),
-              total: z.number(),
-              goalsPerDay: z.record(
-                z.string(),
-                z.array(
-                  z.object({
-                    id: z.string(),
-                    title: z.string(),
-                    completedAt: z.string(),
-                  })
-                )
-              ),
-            }),
-          }),
+          200: getWeekSummaryResponseSchema,
         },
       },
     },
